@@ -25,7 +25,6 @@ export class QuizDataService {
 
   loadDataQuiz(): void {
     this.http.get<QuizData[]>("./assets/quizz-input.json").pipe(delay(2000)).subscribe((data) => {
-      console.log('hello');
       this.state.next({ quizData : data });
       this.loadDataQuizService.dataQuizLoaded();
     });

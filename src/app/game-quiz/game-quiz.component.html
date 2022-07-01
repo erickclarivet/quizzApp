@@ -1,10 +1,10 @@
-<ng-container *ngIf='{ quizDatas : this.quizState | async, gameInfoState : this.gameInfoState | async} as gameInfo'>
+<ng-container *ngIf='{ quizDatas : this.quizState | async, gameInfoState : this.gameInfoState | async, timerState : timerState | async} as gameInfo'>
   <div class="container">
     <header>
-      <h2 class="count-question">Question {{gameInfo.gameInfoState!.currentQuestionIndex + 1}}/{{gameInfo.quizDatas!.quizData.length}}</h2>
-      <h3 class="timer">0000</h3>
+      <h2 class="count-question" *ngIf="!this.isQuizEnded">Question {{gameInfo.gameInfoState!.currentQuestionIndex + 1}}/{{gameInfo.quizDatas!.quizData.length}}</h2>
+      <h3 class="timer">{{this.getTimer()}}</h3>
     </header>
-    <div class="main" *ngIf="!this.isQuizEnded">
+    <div class="main" *ngIf="!this.isQuizEnded && !gameInfo.timerState!.timerEnded">
       <div class="quizz-card">
         <h1 class="question-title">
           <pre>{{gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].label}}</pre>
@@ -18,7 +18,7 @@
         <button mat-raised-button color="primary" (click)="validate(gameInfo.gameInfoState!.currentQuestionIndex, gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].answer)">VALIDER</button>
       </div>
     </div>
-    <div class="main" *ngIf="this.isQuizEnded">
+    <div class="main" *ngIf="this.isQuizEnded || gameInfo.timerState!.timerEnded">
       <div class="response-card">
         <img src="../../assets/confettis.png" alt="">
         <h1 class="result-title">
@@ -26,6 +26,7 @@
         </h1>
         <h1 class="result-values">{{gameInfo.gameInfoState!.playerScore}}/{{gameInfo.quizDatas!.quizData.length}}</h1>
         <h2 class="result-text">réponse(s) juste(s)</h2>
+        <h3>Meilleur score {{gameInfo.gameInfoState!.bestScore}}/{{gameInfo.quizDatas!.quizData.length}}</h3>
       </div>
     </div>
   </div>
