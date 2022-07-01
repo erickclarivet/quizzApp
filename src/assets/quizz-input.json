@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Quel fleuve traverse l'Égypte ?",
+    "answerType": "choice",
+    "choices": ["Le Kibo", "Le Danube", "Le Nil"],
+    "answer": "Le Nil"
+  },
+  {
+    "label": "Quel était le prénom du peintre Van Gogh. ?",
+    "answerType": "choice",
+    "choices": ["Vincent", "Claude", "Paul", "Christian"],
+    "answer": "Vincent"
+  }
+]

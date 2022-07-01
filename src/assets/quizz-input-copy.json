@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Quel fleuve traverse l'Égypte ?",
+    "answerType": "choice",
+    "choices": ["Le Kibo", "Le Danube", "Le Nil"],
+    "answer": "Le Nil"
+  },
+  {
+    "label": "Quel était le prénom du peintre Van Gogh. ?",
+    "answerType": "choice",
+    "choices": ["Vincent", "Claude", "Paul", "Christian"],
+    "answer": "Vincent"
+  },
+  {
+    "label": "Quelle est la capitale de la France ?",
+    "answerType": "text",
+    "answer": "Paris"
+  },
+  {
+    "label": "Quelle est la capitale du Brésil ?",
+    "answerType": "text",
+    "answer": "Brasilia"
+  },
+  {
+    "label": "Lequel de ces français a remporté le tournoi de tennis Roland-Garros ?",
+    "answerType": "multiple-choice",
+    "choices": ["Mary Pierce", "Jo Wilfried Tsonga", "Amélie Mauresmo", "Yannick Noah"],
+    "answers": ["Yannick Noah", "Mary Pierce"]
+  }
+]

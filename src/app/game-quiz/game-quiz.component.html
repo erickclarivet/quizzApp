@@ -1,0 +1,32 @@
+<ng-container *ngIf='{ quizDatas : this.quizState | async, gameInfoState : this.gameInfoState | async} as gameInfo'>
+  <div class="container">
+    <header>
+      <h2 class="count-question">Question {{gameInfo.gameInfoState!.currentQuestionIndex + 1}}/{{gameInfo.quizDatas!.quizData.length}}</h2>
+      <h3 class="timer">0000</h3>
+    </header>
+    <div class="main" *ngIf="!this.isQuizEnded">
+      <div class="quizz-card">
+        <h1 class="question-title">
+          <pre>{{gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].label}}</pre>
+        </h1>
+        <div class="answers">
+          <div class="answer"  *ngFor="let choice of gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].choices; let i = index">
+            <h4>{{choice}}</h4>
+            <mat-radio-button class="picked" value="{{i}}" (click)="selectedChoice(choice)"></mat-radio-button>
+          </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="validate(gameInfo.gameInfoState!.currentQuestionIndex, gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].answer)">VALIDER</button>
+      </div>
+    </div>
+    <div class="main" *ngIf="this.isQuizEnded">
+      <div class="response-card">
+        <img src="../../assets/confettis.png" alt="">
+        <h1 class="result-title">
+          Le Quiz est terminé !
+        </h1>
+        <h1 class="result-values">{{gameInfo.gameInfoState!.playerScore}}/{{gameInfo.quizDatas!.quizData.length}}</h1>
+        <h2 class="result-text">réponse(s) juste(s)</h2>
+      </div>
+    </div>
+  </div>
+</ng-container>
