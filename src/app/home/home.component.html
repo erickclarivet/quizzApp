@@ -1,30 +1,28 @@
-<ng-container *ngIf='{ isQuizLoaded : this.loadDataQuizState | async, gameInfoState : this.gameInfoState | async, quizDataState : this.quizDataState | async } as quizState'>
+<ng-container *ngIf="vm$ | async as vm">
   <div class="container">
     <div class="bg stack">
       <div class="bg-top"></div>
-      <div class="bg-bot">
-
-      </div>
+      <div class="bg-bot"></div>
     </div>
     <div class="main stack">
         <div class="card">
-          <div class="title-label">NOM DU QUIZ</div>
+          <h2 class="title-label">NOM DU QUIZ</h2>
           <h1 class="headline">Mon test technique</h1>
-            <button mat-raised-button [disabled]="!quizState.isQuizLoaded" routerLink="game-Quiz" color="primary" >DEMARRER</button>
+            <button mat-raised-button [disabled]="!vm.isLoaded" routerLink="game-Quiz" color="primary" >DEMARRER</button>
         </div>
 
     </div>
     <div class="bestScore stack">
-      <mat-spinner class="spinner" *ngIf="!quizState.isQuizLoaded" [diameter]="70"></mat-spinner>
+      <mat-spinner class="spinner" *ngIf="!vm.isLoaded" [diameter]="60"></mat-spinner>
       <div class="bestScore-card">
         <div class="trophy">
           <img src="../../assets/trophy.png" alt="">
         </div>
         <div class="best-score-title-label">
-          <h2>Meilleur score</h2>
+          <h1>Meilleur score</h1>
         </div>
         <div class="mark">
-          <h1>{{quizState.gameInfoState!.bestScore}}/{{quizState.quizDataState!.quizData.length}}</h1>
+          <h1>{{vm.bestScore}}/{{vm.quizDataLength}}</h1>
         </div>
       </div>
     </div>

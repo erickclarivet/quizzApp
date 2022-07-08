@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, } from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -22,7 +23,6 @@ const routes : Routes = [
     component: GameQuizComponent,
     canActivate: [GameQuizGuard]
   },
-
 ]
 
 @NgModule({
@@ -33,14 +33,13 @@ const routes : Routes = [
   ],
   imports: [
     BrowserModule,
-    [RouterModule.forRoot(routes),
-    BrowserAnimationsModule,
+    RouterModule.forRoot(routes),
     MatButtonModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     HttpClientModule,
-    BrowserAnimationsModule
-  ]
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

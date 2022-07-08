@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { LoadDataQuizService } from 'src/services/loadDataQuiz.service';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot  } from '@angular/router';
+import { map } from 'rxjs';
+import { QuizDataService } from 'src/services/quiz-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameQuizGuard implements CanActivate {
-  constructor(private loadQuizDataService : LoadDataQuizService, private router : Router) {}
+  constructor(private quizDataService : QuizDataService, private router : Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.loadQuizDataService.state.asObservable().pipe(map((state) => {
-        return (state.isLoaded ? (true) : (this.router.parseUrl('/'))); // or return false, but will block the routing and not routes it to 'home'
+    state: RouterStateSnapshot) {
+      return this.quizDataService.isLoaded$.pipe(map((isLoaded) => {
+        return (isLoaded ? (true) : (this.router.parseUrl('/')));
       }));
-      return true;
   }
 
 }

@@ -1,32 +1,31 @@
-<ng-container *ngIf='{ quizDatas : this.quizState | async, gameInfoState : this.gameInfoState | async, timerState : timerState | async} as gameInfo'>
+<ng-container *ngIf='vm$ | async as vm'>
   <div class="container">
     <header>
-      <h2 class="count-question" *ngIf="!this.isQuizEnded">Question {{gameInfo.gameInfoState!.currentQuestionIndex + 1}}/{{gameInfo.quizDatas!.quizData.length}}</h2>
-      <h3 class="timer">{{this.getTimer()}}</h3>
+      <h2 class="count-question" *ngIf="!isQuizEnded">Question {{vm.currentQuestionIndex + 1}}/{{vm.quizData.length}}</h2>
+      <h3 class="timer">{{vm.countDownValueFormated}}</h3>
     </header>
-    <div class="main" *ngIf="!this.isQuizEnded && !gameInfo.timerState!.timerEnded">
+    <div class="main" *ngIf="!isQuizEnded && !vm.countDownEnded">
       <div class="quizz-card">
         <h1 class="question-title">
-          <pre>{{gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].label}}</pre>
+          <div>{{vm.quizData[vm.currentQuestionIndex].label}}</div>
         </h1>
-        <div class="answers">
-          <div class="answer"  *ngFor="let choice of gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].choices; let i = index">
-            <h4>{{choice}}</h4>
-            <mat-radio-button class="picked" value="{{i}}" (click)="selectedChoice(choice)"></mat-radio-button>
-          </div>
-        </div>
-        <button mat-raised-button color="primary" (click)="validate(gameInfo.gameInfoState!.currentQuestionIndex, gameInfo.quizDatas!.quizData[gameInfo.gameInfoState!.currentQuestionIndex].answer)">VALIDER</button>
-      </div>
+      <mat-radio-group class="answers" aria-label="Select an option">
+        <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" checked="false" (click)="selectedChoice(choice)"  *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
+          <h4>{{choice}}</h4>
+        </mat-radio-button>
+      </mat-radio-group>
+      <button mat-raised-button color="primary" (click)="validate(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
     </div>
-    <div class="main" *ngIf="this.isQuizEnded || gameInfo.timerState!.timerEnded">
+    </div>
+    <div class="main" *ngIf="isQuizEnded || vm.countDownEnded">
       <div class="response-card">
         <img src="../../assets/confettis.png" alt="">
         <h1 class="result-title">
           Le Quiz est terminé !
         </h1>
-        <h1 class="result-values">{{gameInfo.gameInfoState!.playerScore}}/{{gameInfo.quizDatas!.quizData.length}}</h1>
+        <h1 class="result-values">{{vm.playerScore}}/{{vm.quizData.length}}</h1>
         <h2 class="result-text">réponse(s) juste(s)</h2>
-        <h3>Meilleur score {{gameInfo.gameInfoState!.bestScore}}/{{gameInfo.quizDatas!.quizData.length}}</h3>
+        <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}</h3>
       </div>
     </div>
   </div>

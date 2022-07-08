@@ -1,61 +1,96 @@
 import { Injectable } from '@angular/core';
-import { async, BehaviorSubject, map } from 'rxjs';
-import { QuizDataService } from './quizData.service';
-import { Router } from '@angular/router'
+import { BehaviorSubject, map, distinctUntilChanged, interval } from 'rxjs';
 
 export interface GameData {
   currentQuestionIndex: number,
   playerScore : number,
-  bestScore : number
+  countDownEnded : boolean,
+  countDownValue : number
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+const initialCountDownValue = 120;
+
+@Injectable()
 
 export class GameInfoService {
 
-  public gameState = new BehaviorSubject<GameData>({
+  ngOnDestroy(): void {
+  }
+
+  private state = new BehaviorSubject<GameData>({
     currentQuestionIndex: 0,
     playerScore : 0,
-    bestScore : 0
+    countDownEnded : false,
+    countDownValue : initialCountDownValue
   });
 
-  playerScore = 0;
-  bestScore =  0;
-  currentQuestionIndex = 0;
+  currentQuestionIndex$ = this.state.pipe(map((gameData) => gameData.currentQuestionIndex), distinctUntilChanged());
+  playerScore$ = this.state.pipe(map((gameData) => gameData.playerScore), distinctUntilChanged());
+  countDownEnded$ = this.state.pipe(map((state) => state.countDownEnded), distinctUntilChanged());
+  countDownValueFormated$ = this.state.pipe(map((state) => {
+    let minutes = Math.floor(state.countDownValue / 60);
+    let secondes = Math.floor(state.countDownValue % 60);
+    let timer = (minutes < 10 ? '0'+ minutes : minutes) + ':' + (secondes < 10 ? '0'+ secondes : secondes);
+    return timer;
+  })
+  , distinctUntilChanged());
+  interval$ = interval(1000).subscribe(() => {
+    let countDownValue = this.state.value.countDownValue - 1;
+    let countDownEnded = false;
 
-  constructor(private quizDataService : QuizDataService, private router: Router) {
+    if (countDownValue == 0) {
+      countDownValue = initialCountDownValue;
+      countDownEnded = true;
+      this.stopCountdown();
+    }
+    this.state.next({currentQuestionIndex : this.state.value.currentQuestionIndex,
+      playerScore : this.state.value.playerScore,
+      countDownEnded :  countDownEnded,
+      countDownValue : countDownValue
+      });
+  });
 
-  }
+  constructor() {}
 
   updateGameData(newIndex : number, additionalPoints : number) {
-    this.gameState.subscribe(state => {
-        this.playerScore = state.playerScore + additionalPoints;
-        this.bestScore = state.bestScore;
-        this.currentQuestionIndex = state.currentQuestionIndex
-      });
 
-      this.gameState.next({
-        currentQuestionIndex : newIndex,
-        playerScore : this.playerScore,
-        bestScore :  this.bestScore
-      });
-  }
-
-  registerBestScore() {
-    this.gameState.next({
-      currentQuestionIndex : this.currentQuestionIndex,
-      playerScore : this.playerScore,
-      bestScore : (this.playerScore > this.bestScore ? this.playerScore : this.bestScore)
+    this.state.next({
+      currentQuestionIndex : newIndex,
+      playerScore : this.state.value.playerScore + additionalPoints,
+      countDownEnded :  this.state.value.countDownEnded,
+      countDownValue : this.state.value.countDownValue
     });
   }
 
-  restart() {
-    this.gameState.next({
+  // Make it works
+  registerBestScore() {
+    this.state.next({
+      currentQuestionIndex : this.state.value.currentQuestionIndex,
+      playerScore : this.state.value.playerScore,
+      countDownEnded :  this.state.value.countDownEnded,
+      countDownValue : this.state.value.countDownValue
+      // bestScore : (this.playerScore > this.bestScore ? this.playerScore : this.bestScore)
+    });
+  }
+
+  restartCountdown() {
+    this.state.next({
       currentQuestionIndex: 0,
       playerScore : 0,
-      bestScore : this.bestScore
+      countDownEnded :  false,
+      countDownValue : initialCountDownValue
     });
+  }
+
+  stopCountdown() {
+    this.interval$.unsubscribe();
+  }
+
+  convertCounterToStringTime() : string
+  {
+    let minutes = Math.floor(this.state.value.countDownValue / 60);
+    let secondes = Math.floor(this.state.value.countDownValue % 60);
+    let timer = (minutes < 10 ? '0'+ minutes : minutes) + ':' + (secondes < 10 ? '0'+ secondes : secondes);
+    return timer;
   }
 }

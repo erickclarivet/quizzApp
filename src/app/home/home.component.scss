@@ -4,6 +4,11 @@
   margin: 0;
 }
 
+.headline {
+  text-align: center;
+  font-weight: 900;
+}
+
 .container {
   flex-grow: 1;
   display: grid;
@@ -34,7 +39,7 @@
 }
 
 .card {
-  flex: 0.3;
+  flex: 0.4;
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
@@ -54,10 +59,11 @@ button {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  margin-block-start: 30%;
 }
 
 .bestScore-card {
-  flex: 0.20;
+  height: min-content;
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
@@ -68,6 +74,8 @@ button {
 }
 
 .spinner {
-  flex: 0.15;
+  height: min-content;
+  margin-bottom: 2%;
+  margin-top: 5%;
 }
 

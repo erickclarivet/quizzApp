@@ -1,6 +1,15 @@
 :host {
   display: flex;
   flex-grow: 1;
+  ::ng-deep { // VOIR AVEC PADRE SHELLMAN car pas propre
+    .mat-radio-label {
+      padding-right: 20px;
+    }
+
+    .mat-radio-container {
+      margin-left: auto;
+    }
+  }
 }
 
 .container {
@@ -78,11 +87,12 @@
 }
 
 .answer:hover {
-  border: 1px solid blue;
+  box-shadow: inset 0px 0px 0px 1px blue;
 }
 
 h4 {
   margin-bottom: 0;
+  margin-left: 3px;
 }
 
 .picked  {
