@@ -108,10 +108,9 @@ h4 {
 .response-card {
   // background-color: white;
   display: flex;
-  flex : 0.7;
-  height: 60%;
+  flex : 0.5;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
 }
 
@@ -128,5 +127,32 @@ h4 {
   font-size: 500%;
   padding-top: 3rem;
   padding-bottom: 1rem;
+}
+
+.result {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  padding-top: 5%;
+}
+
+.result-details {
+  // background-color: white;
+  display: flex;
+  flex : 0.5;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: flex-start;
+  padding-top: 3%;
+}
+
+.choices-list {
+  padding-left: 1%;
+}
+
+ul {
 
 }
+
+// @media (max-width: 1250px) { ... }

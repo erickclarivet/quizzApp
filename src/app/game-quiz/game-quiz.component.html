@@ -10,14 +10,14 @@
           <div>{{vm.quizData[vm.currentQuestionIndex].label}}</div>
         </h1>
       <mat-radio-group class="answers" aria-label="Select an option">
-        <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" checked="false" (click)="selectedChoice(choice)"  *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
+        <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" (click)="toggleRadio(vm.currentQuestionIndex,choice)"  *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
           <h4>{{choice}}</h4>
         </mat-radio-button>
       </mat-radio-group>
       <button mat-raised-button color="primary" (click)="validate(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
     </div>
     </div>
-    <div class="main" *ngIf="isQuizEnded || vm.countDownEnded">
+    <div class="result" *ngIf="isQuizEnded || vm.countDownEnded">
       <div class="response-card">
         <img src="../../assets/confettis.png" alt="">
         <h1 class="result-title">
@@ -26,6 +26,23 @@
         <h1 class="result-values">{{vm.playerScore}}/{{vm.quizData.length}}</h1>
         <h2 class="result-text">réponse(s) juste(s)</h2>
         <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}</h3>
+      </div>
+      <div class="result-details">
+        <h1>Détail des résultats :</h1>
+        <div class="choices-list" *ngFor="let answer of userChoices; let i = index">
+          <h3>{{vm.quizData[i].label}}
+            <span *ngIf="answer.verification == 'correct'">✔️</span>
+            <span *ngIf="answer.verification == 'false'">❌</span>
+          </h3>
+          <ul>
+            <li>
+              <h3>Votre réponse était '{{answer.choices}}'.</h3>
+            </li>
+            <li *ngIf="answer.verification == 'false'">
+              <h3>La bonne réponse était '{{vm.quizData[i].answer}}'.</h3>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
