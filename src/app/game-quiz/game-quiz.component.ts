@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { GameInfoService } from 'src/services/game-info.service';
 import { QuizDataService } from 'src/services/quiz-data.service';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
@@ -17,8 +17,8 @@ export class AnwserModel {
 })
 
 export class GameQuizComponent implements OnInit {
+  oldBestScore = 0;
 
-  choiceSelected = "";
   vm$ = combineLatest([ this.quizDataService.quizData$, this.quizDataService.quizDataLength$,
     this.gameInfoService.currentQuestionIndex$, this.gameInfoService.countDownEnded$, this.gameInfoService.countDownValueFormated$,
     this.quizDataService.bestScore$, this.gameInfoService.playerScore$ ])
@@ -58,8 +58,7 @@ export class GameQuizComponent implements OnInit {
   }
 
   toggleCheckBox(currentQuestionIndex : number, choice : string) {
-    // this.userChoices.push([choice])
-    console.log("toggle");
+    console.log(`toggle : ${choice}`);
     if (this.userChoices.length >= (currentQuestionIndex + 1))
     {
       console.log("array exist");
@@ -95,7 +94,8 @@ export class GameQuizComponent implements OnInit {
     console.log(this.userChoices);
   }
 
-  validate(currentQuestionIndex : number, answer: string) {
+  validateChoice(currentQuestionIndex : number, answer: string) {
+    console.log(answer);
     if (this.userChoices.length < (currentQuestionIndex + 1)) {
       return;
     }
@@ -125,4 +125,71 @@ export class GameQuizComponent implements OnInit {
       this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
     }
   }
+
+  validateText(currentQuestionIndex : number, userChoice : string, answer: string) {
+    if (userChoice == "") {
+      return;
+    }
+
+    // add user choice
+    let newUserChoice = new AnwserModel();
+    newUserChoice.choices.push(userChoice);
+    this.userChoices.push(newUserChoice);
+
+    var correctAnswer = 0; // TO DO : put inside service
+    if (userChoice.toLowerCase().trim() == answer.toLowerCase().trim()) {
+      this.userChoices[currentQuestionIndex].verification = 'correct';
+      correctAnswer++;
+    }
+    else {
+      this.userChoices[currentQuestionIndex].verification = 'false';
+    }
+
+    // put it in the game service
+    this.quizDataService.state$.pipe(map(state => {
+      return (state.quizData.length == (currentQuestionIndex + 1)? true : false)})).subscribe(isFinished => this.isQuizEnded = isFinished);
+
+    this.gameInfoService.updateGameData((this.isQuizEnded ? currentQuestionIndex : currentQuestionIndex + 1), correctAnswer);
+
+    if (this.isQuizEnded) // TO DO : put inside service
+    {
+      this.gameInfoService.stopCountdown();
+      this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
+    }
+  }
+
+  validateMultiple(currentQuestionIndex : number, answers: string[]) {
+    console.log(this.userChoices[currentQuestionIndex].choices);
+    console.log(answers);
+    if (this.userChoices.length < (currentQuestionIndex + 1)) {
+      return;
+    }
+    if (this.userChoices[currentQuestionIndex].choices.length == 0)
+    {
+      return;
+    }
+
+    var correctAnswer = 0; // TO DO : put inside service
+    if (answers.every(answer => this.userChoices[currentQuestionIndex].choices.includes(answer))) {
+      this.userChoices[currentQuestionIndex].verification = 'correct';
+      correctAnswer++;
+    }
+    else {
+      this.userChoices[currentQuestionIndex].verification = 'false';
+    }
+
+    // put it in the game service
+    this.quizDataService.state$.pipe(map(state => {
+      return (state.quizData.length == (currentQuestionIndex + 1)? true : false)})).subscribe(isFinished => this.isQuizEnded = isFinished);
+
+    this.gameInfoService.updateGameData((this.isQuizEnded ? currentQuestionIndex : currentQuestionIndex + 1), correctAnswer);
+
+    if (this.isQuizEnded) // TO DO : put inside service
+    {
+      this.gameInfoService.stopCountdown();
+      this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
+    }
+  }
+
+
 }

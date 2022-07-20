@@ -9,12 +9,28 @@
         <h1 class="question-title">
           <div>{{vm.quizData[vm.currentQuestionIndex].label}}</div>
         </h1>
-      <mat-radio-group class="answers" aria-label="Select an option">
-        <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" (click)="toggleRadio(vm.currentQuestionIndex,choice)"  *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
-          <h4>{{choice}}</h4>
-        </mat-radio-button>
-      </mat-radio-group>
-      <button mat-raised-button color="primary" (click)="validate(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
+      <div class="answers">
+        <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'">
+            <input matInput #choiceInput class="answer" placeholder="..." value="Sushi">
+            <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'" mat-raised-button color="primary" (click)="validateText(vm.currentQuestionIndex, choiceInput.value, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
+        </div>
+        <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType != 'text'">
+          <div *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
+            <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'choice'">
+              <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" (click)="toggleRadio(vm.currentQuestionIndex,choice)" >
+                <h4>{{choice}}</h4>
+              </mat-radio-button>
+            </div>
+            <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'multiple-choice'">
+              <mat-checkbox labelPosition="before" class="answer" value="{{choice}}" (click)="toggleCheckBox(vm.currentQuestionIndex,choice)" >
+                <h4>{{choice}}</h4>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'choice'" mat-raised-button color="primary" (click)="validateChoice(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
+      <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'multiple-choice'" mat-raised-button color="primary" (click)="validateMultiple(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answers)">VALIDER</button>
     </div>
     </div>
     <div class="result" *ngIf="isQuizEnded || vm.countDownEnded">
@@ -25,7 +41,7 @@
         </h1>
         <h1 class="result-values">{{vm.playerScore}}/{{vm.quizData.length}}</h1>
         <h2 class="result-text">réponse(s) juste(s)</h2>
-        <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}</h3>
+        <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}<mat-card *ngIf="vm.playerScore == vm.bestScore">new score!</mat-card></h3>
       </div>
       <div class="result-details">
         <h1>Détail des résultats :</h1>
@@ -39,7 +55,8 @@
               <h3>Votre réponse était '{{answer.choices}}'.</h3>
             </li>
             <li *ngIf="answer.verification == 'false'">
-              <h3>La bonne réponse était '{{vm.quizData[i].answer}}'.</h3>
+              <h3 *ngIf="vm.quizData[i].answerType == 'multiple-choice'">La bonne réponse était '{{vm.quizData[i].answers}}'.</h3>
+              <h3 *ngIf="vm.quizData[i].answerType != 'multiple-choice' ">La bonne réponse était '{{vm.quizData[i].answer}}'.</h3>
             </li>
           </ul>
         </div>

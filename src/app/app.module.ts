@@ -5,7 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, } from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -34,9 +37,12 @@ const routes : Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    MatButtonModule,
+    MatButtonModule, // TODO: create Material module
     MatProgressSpinnerModule,
     MatRadioModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatCardModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule
