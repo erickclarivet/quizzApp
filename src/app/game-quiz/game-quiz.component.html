@@ -9,12 +9,14 @@
         <h1 class="question-title">
           <div>{{vm.quizData[vm.currentQuestionIndex].label}}</div>
         </h1>
-      <div class="answers">
-        <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'">
-            <input matInput #choiceInput class="answer" placeholder="..." value="Sushi">
+      <div>
+        <div class="answers2" *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'">
+          <mat-form-field  appearance="fill">
+            <input class="answer2" matInput #choiceInput placeholder="Entrer votre reponse" >
+          </mat-form-field>
             <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'" mat-raised-button color="primary" (click)="validateText(vm.currentQuestionIndex, choiceInput.value, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
         </div>
-        <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType != 'text'">
+        <div class="answers" *ngIf="vm.quizData[vm.currentQuestionIndex].answerType != 'text'">
           <div *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
             <div *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'choice'">
               <mat-radio-button labelPosition="before" class="answer" value="{{choice}}" (click)="toggleRadio(vm.currentQuestionIndex,choice)" >

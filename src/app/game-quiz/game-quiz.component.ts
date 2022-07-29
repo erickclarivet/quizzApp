@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { combineLatest, map, tap } from 'rxjs';
 import { GameInfoService } from 'src/services/game-info.service';
 import { QuizDataService } from 'src/services/quiz-data.service';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 export class AnwserModel {
   choices: string[] = new Array<string>()
@@ -31,11 +30,7 @@ export class GameQuizComponent implements OnInit {
   choice = '';
   isQuizEnded = false;
 
-  myForm = this.fb.group({
-    choice: ['', Validators.required ]
-  });
-
-  constructor(private quizDataService : QuizDataService, private gameInfoService : GameInfoService, private fb: FormBuilder) {}
+  constructor(private quizDataService : QuizDataService, private gameInfoService : GameInfoService) {}
 
   ngOnInit(): void {
   }
@@ -156,6 +151,8 @@ export class GameQuizComponent implements OnInit {
       this.gameInfoService.stopCountdown();
       this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
     }
+
+    answer = '';
   }
 
   validateMultiple(currentQuestionIndex : number, answers: string[]) {
