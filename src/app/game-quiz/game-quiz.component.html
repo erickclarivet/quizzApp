@@ -43,19 +43,16 @@
         </h1>
         <h1 class="result-values">{{vm.playerScore}}/{{vm.quizData.length}}</h1>
         <h2 class="result-text">réponse(s) juste(s)</h2>
-        <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}<mat-card *ngIf="vm.playerScore == vm.bestScore">new score!</mat-card></h3>
+        <h3>Meilleur score {{vm.bestScore}}/{{vm.quizData.length}}<span class="newscore" *ngIf="vm.playerScore == vm.bestScore">Nouveau record!</span></h3>
       </div>
       <div class="result-details">
         <h1>Détail des résultats :</h1>
         <div class="choices-list" *ngFor="let answer of userChoices; let i = index">
           <h3>{{vm.quizData[i].label}}
-            <span *ngIf="answer.verification == 'correct'">✔️</span>
+            <span *ngIf="answer.verification == 'correct'">✅</span>
             <span *ngIf="answer.verification == 'false'">❌</span>
           </h3>
           <ul>
-            <li>
-              <h3>Votre réponse était '{{answer.choices}}'.</h3>
-            </li>
             <li *ngIf="answer.verification == 'false'">
               <h3 *ngIf="vm.quizData[i].answerType == 'multiple-choice'">La bonne réponse était '{{vm.quizData[i].answers}}'.</h3>
               <h3 *ngIf="vm.quizData[i].answerType != 'multiple-choice' ">La bonne réponse était '{{vm.quizData[i].answer}}'.</h3>

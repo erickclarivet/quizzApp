@@ -10,11 +10,21 @@
       margin-left: auto;
     }
 
-    .mat-checkbox-inner-container {
-     margin-right:0;
-     width:100%;
+    .mat-checkbox-layout {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
     }
-  }
+
+    .mat-checkbox-label-before .mat-checkbox-inner-container{
+      margin-left: 0;
+      margin-right: 20px;
+    }
+
+    .mat-checkbox-inner-container {
+      margin-right:0;
+      }
+    }
 }
 
 .container {
@@ -128,6 +138,7 @@ h4 {
 }
 
 .quizz-card button {
+  margin-top: 20px;
   justify-self: center;
   align-self: center;
   width: min-content;
@@ -178,4 +189,12 @@ h4 {
 .choices-list {
   padding-left: 1%;
 }
-// @media (max-width: 1250px) { ... }
+
+.newscore {
+  text-align: center;
+  border-radius: 3px;
+  background-color: darkblue;
+  padding: 5px 10px;
+  margin-left: 10px;
+  color: white;
+}
