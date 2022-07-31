@@ -12,9 +12,9 @@
       <div>
         <div class="answers2" *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'">
           <mat-form-field  appearance="fill">
-            <input class="answer2" matInput #choiceInput placeholder="Entrer votre reponse" >
+            <input class="answer2" matInput [(ngModel)]="choiceInput" placeholder="Entrer votre reponse" />
           </mat-form-field>
-            <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'" mat-raised-button color="primary" (click)="validateText(vm.currentQuestionIndex, choiceInput.value, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
+            <button *ngIf="vm.quizData[vm.currentQuestionIndex].answerType == 'text'" mat-raised-button color="primary" (click)="validateText(vm.currentQuestionIndex, vm.quizData[vm.currentQuestionIndex].answer)">VALIDER</button>
         </div>
         <div class="answers" *ngIf="vm.quizData[vm.currentQuestionIndex].answerType != 'text'">
           <div *ngFor="let choice of vm.quizData[vm.currentQuestionIndex].choices; let i = index">
