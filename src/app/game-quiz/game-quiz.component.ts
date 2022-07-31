@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { combineLatest, map, tap } from 'rxjs';
 import { GameInfoService } from 'src/services/game-info.service';
 import { QuizDataService } from 'src/services/quiz-data.service';
@@ -17,6 +17,10 @@ export class AnwserModel {
 
 export class GameQuizComponent implements OnInit {
   oldBestScore = 0;
+  choiceInput = '';
+  choice = '';
+  isQuizEnded = false;
+  userChoices : AnwserModel[] = new Array<AnwserModel>();
 
   vm$ = combineLatest([ this.quizDataService.quizData$, this.quizDataService.quizDataLength$,
     this.gameInfoService.currentQuestionIndex$, this.gameInfoService.countDownEnded$, this.gameInfoService.countDownValueFormated$,
@@ -24,11 +28,6 @@ export class GameQuizComponent implements OnInit {
     .pipe(map(([ quizData, quizDataLength, currentQuestionIndex, countDownEnded, countDownValueFormated, bestScore, playerScore ]) => {
       return { quizData, quizDataLength, currentQuestionIndex, countDownEnded, countDownValueFormated, bestScore, playerScore }
     }));
-
-  userChoices : AnwserModel[] = new Array<AnwserModel>();
-
-  choice = '';
-  isQuizEnded = false;
 
   constructor(private quizDataService : QuizDataService, private gameInfoService : GameInfoService) {}
 
@@ -119,20 +118,23 @@ export class GameQuizComponent implements OnInit {
       this.gameInfoService.stopCountdown();
       this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
     }
+
+    this.choiceInput = '';
   }
 
-  validateText(currentQuestionIndex : number, userChoice : string, answer: string) {
-    if (userChoice == "") {
+  validateText(currentQuestionIndex : number, answer: string) {
+    console.log(this.choiceInput);
+    if (this.choiceInput == "") {
       return;
     }
 
     // add user choice
     let newUserChoice = new AnwserModel();
-    newUserChoice.choices.push(userChoice);
+    newUserChoice.choices.push(this.choiceInput);
     this.userChoices.push(newUserChoice);
 
     var correctAnswer = 0; // TO DO : put inside service
-    if (userChoice.toLowerCase().trim() == answer.toLowerCase().trim()) {
+    if (this.choiceInput.toLowerCase().trim() == answer.toLowerCase().trim()) {
       this.userChoices[currentQuestionIndex].verification = 'correct';
       correctAnswer++;
     }
@@ -152,7 +154,7 @@ export class GameQuizComponent implements OnInit {
       this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
     }
 
-    answer = '';
+    this.choiceInput = '';
   }
 
   validateMultiple(currentQuestionIndex : number, answers: string[]) {
@@ -186,6 +188,8 @@ export class GameQuizComponent implements OnInit {
       this.gameInfoService.stopCountdown();
       this.quizDataService.registerBestScore(this.gameInfoService.playerScore$);
     }
+
+    this.choiceInput = '';
   }
 
 
