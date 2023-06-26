@@ -28,13 +28,11 @@
     "@angular-devkit/build-angular": "^14.0.3",
     "@angular/cli": "~14.0.3",
     "@angular/compiler-cli": "^14.0.0",
-    "@types/jasmine": "~4.0.0",
-    "jasmine-core": "~4.1.0",
-    "karma": "~6.3.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.0.0",
-    "karma-jasmine-html-reporter": "~1.7.0",
+    "@playwright/test": "^1.35.1",
+    "chromium": "^3.0.3",
+    "install": "^0.13.0",
+    "npx": "^10.2.2",
+    "playwright": "^1.35.1",
     "typescript": "~4.7.2"
   }
 }
