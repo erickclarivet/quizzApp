@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_quizzApp_1691482891034-push-trigger-input-set
+  identifier: Build_quizzApp_1691482891034pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_quizzApp_1691482891034
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
