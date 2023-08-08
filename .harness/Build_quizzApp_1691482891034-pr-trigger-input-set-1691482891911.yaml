@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_quizzApp_1691482891034-pr-trigger-input-set
+  identifier: Build_quizzApp_1691482891034prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_quizzApp_1691482891034
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
